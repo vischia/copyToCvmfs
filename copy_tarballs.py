@@ -1,29 +1,35 @@
 import os,sys,datetime
 from subprocess import Popen, PIPE
 
-exit_anyway_after_check = False
-# exit_anyway_after_check = True
+import optparse
+# Command line options
+usage = 'usage: %prog --input]'
+parser = optparse.OptionParser(usage)
+parser.add_option('-i', '--input',          dest='inputDir',       help='input directory',        default='/tmp/doesnotexist/',           type='string')
+parser.add_option('-o', '--output',         dest='outputDir',      help='output directory',       default='~/www/susyRA7/',           type='string')
+parser.add_option('-v', '--version',        dest='version',   help='gridpack version', default='v1',   type='string')
+parser.add_option('-g', '--generator',     dest='generator', help='target phys generator (influences folder)')
+parser.add_option('-e', '--exitAfterCheck', dest='exitAfterCheck', help='Exit anyways after check', action='store_true')
+parser.add_option('-d', '--dryRun',        dest='dryRun', help='Only print commands, do not actually execute them', action='store_true')
 
-#eos_mount_dir = '/afs/cern.ch/user/p/perrozzi/eos/'
+(opt, args) = parser.parse_args()
 
-#inputs_dir = '/afs/cern.ch/user/m/mmyllyma/public/gridpacks/'
-inputs_dir = '/tmp/chayanit/'
-#inputs_dir = '/afs/cern.ch/work/a/aioannou/public/MC_Production/AToZh_13TeV/Round2/'
-#inputs_dir ='/afs/cern.ch/work/c/ccaillol/public/For_Chayanit/vbfh01_M125_Toa01a01_Tomumutautau'
-# inputs_dir ='/afs/cern.ch/work/m/mharrend/public/gridpacksmartina/'
-# inputs_dir ='/afs/cern.ch/work/k/kreis/public/forHIGMC/'
-# inputs_dir ='/afs/cern.ch/work/a/ajafari/public/GridPacks'
-# inputs_dir ='/afs/cern.ch/user/l/lviliani/public/POWHEG_HJ_MiNLO_NNLOPS/'
-# inputs_dir ='/afs/cern.ch/work/z/zghiche/public/GridPacks/ForXanda/'
-# inputs_dir ='/afs/cern.ch/user/z/zghiche/public/ForXanda/'
-# inputs_dir ='/afs/cern.ch/work/h/hroskes/public/test_centralproduction/highmassgridpacks/2l2nu/CMSSW_7_1_14/src/collect_gridpacks/'
-# inputs_dir ='/afs/cern.ch/user/o/obondu/work/public/forMC'
-               
-version = "v1"
-  
-#target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/13TeV/powheg/V2/'
-target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.3.3/'
- 
+inputs_dir               = opt.inputDir
+outputDir                = opt.outputDir
+exit_anyway_after_check = opt.exitAfterCheck
+version                  = opt.version
+generator                = opt.generator
+dryRun                   = opt.dryRun
+
+target_main = ''
+if generator.find('powheg'):
+  target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/13TeV/powheg/V2/'
+elif generator.find('madgraph'):
+  target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.3.3/'
+else:
+  print("NO GENERATOR SPECIFIED. Exiting.")
+  sys.exit(1)
+
 print 'target main folder',target_main
 #if not os.path.isdir('/eos/cms/store/group/phys_generator/cvmfs/gridpacks/'):
 #  print 'mount eos first!'
@@ -70,8 +76,12 @@ for input in inputs:
     os.makedirs(fullpath_version)
   
   print("cp "+inputs_dir+"/"+input+" "+fullpath_version.replace('/eos/cms','')+'/')
-  os.system("cp "+inputs_dir+"/"+input+" "+fullpath_version+'/')
+  if not dryRun:
+    os.system("cp "+inputs_dir+"/"+input+" "+fullpath_version+'/')
   existing_list2.append(((fullpath_version+'/'+os.listdir(fullpath_version)[0]).replace('/eos/cms/store/group/phys_generator/cvmfs','/cvmfs/cms.cern.ch/phys_generator')).replace('//','/'))
+
+if dryRun:
+  print('Dry run selected: action has not been executed. Listing only.')
 
 print 'list of copied files'
 print existing_list2
