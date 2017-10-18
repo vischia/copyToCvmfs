@@ -23,14 +23,30 @@ generator                = opt.generator
 energy                   = opt.energy
 dryRun                   = opt.dryRun
 
+if dryRun:
+  print inputs_dir
+  print outputDir
+  print exit_anyway_after_check
+  print version
+  print generator
+  print energy
+  print dryRun
+  sys.exit(1)
+
 target_main = ''
-if generator.find('powheg'):
+if generator.find('powheg') !=-1:
   target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/{e}TeV/powheg/V2/'.format(e=energy)
-elif generator.find('madgraph'):
+elif generator.find('madgraph') !=-1:
   target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/{e}TeV/madgraph/V5_2.3.3/'.format(e=energy)
 else:
   print("NO GENERATOR SPECIFIED. Exiting.")
   sys.exit(1)
+
+#if dryRun:
+#  print "HERE"
+#  print target_main
+#  sys.exit(1)
+
 
 print 'target main folder',target_main
 #if not os.path.isdir('/eos/cms/store/group/phys_generator/cvmfs/gridpacks/'):
