@@ -9,7 +9,7 @@ parser.add_option('-i', '--input',          dest='inputDir',       help='input d
 parser.add_option('-o', '--output',         dest='outputDir',      help='output directory',       default='~/www/susyRA7/',           type='string')
 parser.add_option('-v', '--version',        dest='version',   help='gridpack version', default='v1',   type='string')
 parser.add_option('-g', '--generator',      dest='generator', help='target phys generator (influences folder)')
-parser.add_option('-e', '--energy',         dest='energy'     help='targed cm energy',            default='13', type='string')
+parser.add_option('-e', '--energy',         dest='energy',    help='targed cm energy',            default='13', type='string')
 parser.add_option('-a', '--exitAfterCheck', dest='exitAfterCheck', help='Exit anyways after check', action='store_true')
 parser.add_option('-d', '--dryRun',         dest='dryRun', help='Only print commands, do not actually execute them', action='store_true')
 
