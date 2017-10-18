@@ -65,7 +65,7 @@ existing_list2 = []
 trow_exception = False
 
 for input in inputs:
-  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
+  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
   fullpath = target_main+"/"+foldername
   fullpath_version = fullpath+"/"+version
   print "checking version folder",version,"for",foldername,", check if it is empty"
@@ -82,7 +82,7 @@ if(trow_exception):
 if exit_anyway_after_check: sys.exit(1)
   
 for input in inputs:
-  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
+  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
   fullpath = target_main+"/"+foldername
   fullpath_version = fullpath+"/"+version+"/"
   print 'foldername',foldername.replace('/eos/cms','')
