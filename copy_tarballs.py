@@ -8,9 +8,10 @@ parser = optparse.OptionParser(usage)
 parser.add_option('-i', '--input',          dest='inputDir',       help='input directory',        default='/tmp/doesnotexist/',           type='string')
 parser.add_option('-o', '--output',         dest='outputDir',      help='output directory',       default='~/www/susyRA7/',           type='string')
 parser.add_option('-v', '--version',        dest='version',   help='gridpack version', default='v1',   type='string')
-parser.add_option('-g', '--generator',     dest='generator', help='target phys generator (influences folder)')
-parser.add_option('-e', '--exitAfterCheck', dest='exitAfterCheck', help='Exit anyways after check', action='store_true')
-parser.add_option('-d', '--dryRun',        dest='dryRun', help='Only print commands, do not actually execute them', action='store_true')
+parser.add_option('-g', '--generator',      dest='generator', help='target phys generator (influences folder)')
+parser.add_option('-e', '--energy',         dest='energy'     help='targed cm energy',            default='13', type='string')
+parser.add_option('-a', '--exitAfterCheck', dest='exitAfterCheck', help='Exit anyways after check', action='store_true')
+parser.add_option('-d', '--dryRun',         dest='dryRun', help='Only print commands, do not actually execute them', action='store_true')
 
 (opt, args) = parser.parse_args()
 
@@ -19,13 +20,14 @@ outputDir                = opt.outputDir
 exit_anyway_after_check = opt.exitAfterCheck
 version                  = opt.version
 generator                = opt.generator
+energy                   = opt.energy
 dryRun                   = opt.dryRun
 
 target_main = ''
 if generator.find('powheg'):
-  target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/13TeV/powheg/V2/'
+  target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/{e}TeV/powheg/V2/'.format(e=energy)
 elif generator.find('madgraph'):
-  target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/13TeV/madgraph/V5_2.3.3/'
+  target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/{e}TeV/madgraph/V5_2.3.3/'.format(e=energy)
 else:
   print("NO GENERATOR SPECIFIED. Exiting.")
   sys.exit(1)
