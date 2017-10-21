@@ -12,7 +12,7 @@ parser.add_option('-g', '--generator',      dest='generator', help='target phys 
 parser.add_option('-e', '--energy',         dest='energy',    help='targed cm energy',            default='13', type='string')
 parser.add_option('-a', '--exitAfterCheck', dest='exitAfterCheck', help='Exit anyways after check', action='store_true')
 parser.add_option('-d', '--dryRun',         dest='dryRun', help='Only print commands, do not actually execute them', action='store_true')
-
+parser.add_option('-y', '--year',           dest='year',  help='Year (influences output path)', default='2016', type='string')
 (opt, args) = parser.parse_args()
 
 inputs_dir               = opt.inputDir
@@ -22,6 +22,7 @@ version                  = opt.version
 generator                = opt.generator
 energy                   = opt.energy
 dryRun                   = opt.dryRun
+year                     = opt.year
 
 if dryRun:
   print inputs_dir
@@ -31,16 +32,28 @@ if dryRun:
   print generator
   print energy
   print dryRun
+  print year
   sys.exit(1)
 
 target_main = ''
 if generator.find('powheg') !=-1:
   target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/{e}TeV/powheg/V2/'.format(e=energy)
+  if year=='2017':
+    target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/2017/{e}TeV/powheg/V2/'.format(e=energy)     
 elif generator.find('madgraph') !=-1:
   target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/slc6_amd64_gcc481/{e}TeV/madgraph/V5_2.3.3/'.format(e=energy)
+  if year=='2017':
+    target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/2017/{e}TeV/madgraph/V5_2.4.2/'.format(e=energy)
+elif generator.find('sherpa') !=-1:
+  if year=='2017':
+    target_main = '/eos/cms/store/group/phys_generator/cvmfs/gridpacks/2017/{e}TeV/sherpa/V2.2.4/'.format(e=energy)
+  else:
+    print("NO VALID GENERATOR SPECIFIED. Exiting.")
+    sys.exit(1)
 else:
   print("NO GENERATOR SPECIFIED. Exiting.")
   sys.exit(1)
+
 
 #if dryRun:
 #  print "HERE"
@@ -93,9 +106,9 @@ for input in inputs:
   if not os.path.isdir(fullpath_version):
     os.makedirs(fullpath_version)
   
-  print("cp "+inputs_dir+"/"+input+" "+fullpath_version.replace('/eos/cms','')+'/')
+  print("cp "+inputs_dir+"/"+input+" "+fullpath_version.replace('/eos/cms','')+'/' + input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball',''))
   if not dryRun:
-    os.system("cp "+inputs_dir+"/"+input+" "+fullpath_version+'/')
+    os.system("cp "+inputs_dir+"/"+input+" "+fullpath_version+'/'+input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball',''))
   existing_list2.append(((fullpath_version+'/'+os.listdir(fullpath_version)[0]).replace('/eos/cms/store/group/phys_generator/cvmfs','/cvmfs/cms.cern.ch/phys_generator')).replace('//','/'))
 
 if dryRun:
