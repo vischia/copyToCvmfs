@@ -78,7 +78,7 @@ existing_list2 = []
 trow_exception = False
 
 for input in inputs:
-  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
+  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('_slc6_amd64_gcc630_CMSSW_9_3_1','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
   fullpath = target_main+"/"+foldername
   fullpath_version = fullpath+"/"+version
   print "checking version folder",version,"for",foldername,", check if it is empty"
@@ -95,7 +95,7 @@ if(trow_exception):
 if exit_anyway_after_check: sys.exit(1)
   
 for input in inputs:
-  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
+  foldername = input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('_slc6_amd64_gcc630_CMSSW_9_3_1','').replace('.tar.gz','').replace('.tar.xz','').replace('.tgz','')
   fullpath = target_main+"/"+foldername
   fullpath_version = fullpath+"/"+version+"/"
   print 'foldername',foldername.replace('/eos/cms','')
@@ -106,9 +106,9 @@ for input in inputs:
   if not os.path.isdir(fullpath_version):
     os.makedirs(fullpath_version)
   
-  print("cp "+inputs_dir+"/"+input+" "+fullpath_version.replace('/eos/cms','')+'/' + input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball',''))
+  print("cp "+inputs_dir+"/"+input+" "+fullpath_version.replace('/eos/cms','')+'/' + input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('_slc6_amd64_gcc630_CMSSW_9_3_1',''))
   if not dryRun:
-    os.system("cp "+inputs_dir+"/"+input+" "+fullpath_version+'/'+input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball',''))
+    os.system("cp "+inputs_dir+"/"+input+" "+fullpath_version+'/'+input.replace('_slc6_amd64_gcc481_CMSSW_7_1_28_tarball','').replace('_slc6_amd64_gcc481_CMSSW_7_1_30_tarball','').replace('_slc6_amd64_gcc630_CMSSW_9_3_1',''))
   existing_list2.append(((fullpath_version+'/'+os.listdir(fullpath_version)[0]).replace('/eos/cms/store/group/phys_generator/cvmfs','/cvmfs/cms.cern.ch/phys_generator')).replace('//','/'))
 
 if dryRun:
